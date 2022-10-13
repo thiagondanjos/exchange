@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: 'postgres:14'
+    container_name: 'postgres14-exchange'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  app:
+    container_name: 'app-exchange'
+    depends_on:
+      - 'postgres'
+    build: .
+    command: bash start.sh
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/exchange
+      - gems:/gems
+
+volumes:
+  postgres:
+  gems:
